@@ -20,7 +20,6 @@ class SentimentsController < ApplicationController
     end
 
     @sentiment = Sentiment.new(sentiment_params)
-
     if @sentiment.save
       render json: @sentiment, status: :created, location: @sentiment
     else
