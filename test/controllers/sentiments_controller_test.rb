@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SentimentsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @sentiment = sentiments(:one)
+    @sentiment = sentiments(:cranky_haight)
   end
 
   test "should get index" do
@@ -12,7 +12,7 @@ class SentimentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create sentiment" do
     assert_difference('Sentiment.count') do
-      post sentiments_url, params: { sentiment: {  } }, as: :json
+      post sentiments_url, params: { sentiment: { region_id: 77, score: 1 } }, as: :json
     end
 
     assert_response 201
@@ -24,7 +24,7 @@ class SentimentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update sentiment" do
-    patch sentiment_url(@sentiment), params: { sentiment: {  } }, as: :json
+    patch sentiment_url(@sentiment), params: { sentiment: { region_id: 77, score: -10 } }, as: :json
     assert_response 200
   end
 

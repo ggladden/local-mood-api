@@ -15,8 +15,12 @@ class SentimentsController < ApplicationController
 
   # POST /sentiments
   def create
+    unless sentiment_params[:region_id]
+      @region = Region.find_by_name(sentiment_params[:region_name])
+    end
+
     @sentiment = Sentiment.new(sentiment_params)
-    # byebug
+
     if @sentiment.save
       render json: @sentiment, status: :created, location: @sentiment
     else
@@ -46,6 +50,6 @@ class SentimentsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def sentiment_params
-      params.permit(:score, :region_id)
+      params.require(:sentiment).permit(:score, :region_id, :region_name)
     end
 end
