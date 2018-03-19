@@ -3,7 +3,8 @@ class SentimentsController < ApplicationController
 
   # GET /sentiments
   def index
-    @sentiments = Sentiment.all
+    # @sentiments = Sentiment.all
+    @sentiments = Region.find(params[:region_id]).sentiments.last
 
     render json: @sentiments
   end
@@ -15,11 +16,13 @@ class SentimentsController < ApplicationController
 
   # POST /sentiments
   def create
-    unless sentiment_params[:region_id]
-      @region = Region.find_by_name(sentiment_params[:region_name])
-    end
+    # byebug
+    # unless sentiment_params[:region_name]
+    #   @region = Region.find_by_name(sentiment_params[:region_name])
+    # end
 
-    @sentiment = Sentiment.new(sentiment_params)
+    # @sentiment = Sentiment.new(sentiment_params)
+    @sentiment = Sentiment.create(sentiment_params)
     if @sentiment.save
       render json: @sentiment, status: :created, location: @sentiment
     else
@@ -44,11 +47,12 @@ class SentimentsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_sentiment
-      @sentiment = Sentiment.find(params[:id])
+      # @sentiment = Sentiment.find(params[:id])
+      @sentiment = Sentiment.last
     end
 
     # Only allow a trusted parameter "white list" through.
     def sentiment_params
-      params.require(:sentiment).permit(:score, :region_id, :region_name)
+      params.require(:sentiment).permit(:score, :region_id)
     end
 end
